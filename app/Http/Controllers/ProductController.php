@@ -81,7 +81,34 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        // dd($request->all());
+        $request->validate([
+            'name' => 'required',
+            'product_id' => 'required',
+            'price' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10048'
+        ]);
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $product->update([
+                'name' => $request->name,
+                'product_id' => $request->product_id,
+                'description' => $request->description,
+                'price' => $request->price,
+                'stock' => $request->stock,
+                'image' => $imageName,
+            ]);
+        }else{
+            $product->update([
+                'name' => $request->name,
+                'product_id' => $request->product_id,
+                'description' => $request->description,
+                'price' => $request->price,
+                'stock' => $request->stock,
+            ]);
+        }
+        return redirect()->route('products.index')->withSuccess('Product updated successfully');
     }
 
     /**
@@ -90,6 +117,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('products.index');
+        return redirect()->route('products.index')->withSuccess('Product deleted successfully');
     }
 }

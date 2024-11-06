@@ -20,23 +20,29 @@
         <thead>
             <tr>
                 <th onclick="sortTable(0)"># <span>&#x2191;&#x2193;</span></th>
-                <th onclick="sortTable(1)">Name <span>&#x2191;&#x2193;</span></th>
-                <th onclick="sortTable(2)">Description <span>&#x2191;&#x2193;</span></th>
-                <th onclick="sortTable(3)">Price <span>&#x2191;&#x2193;</span></th>
+                <th onclick="sortTable(1)">Product ID <span>&#x2191;&#x2193;</span></th>
+                <th onclick="sortTable(2)">Name <span>&#x2191;&#x2193;</span></th>
+                <th onclick="sortTable(3)">Description <span>&#x2191;&#x2193;</span></th>
+                <th onclick="sortTable(4)">Price <span>&#x2191;&#x2193;</span></th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody id="tableBody">
             @foreach($products as $product)
             <tr>
-                <td>{{ $product->id }}</td>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $product->product_id }}</td>
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->description }}</td>
                 <td>{{ $product->price }}</td>
                 <td>
                     <a href="{{ route('products.show', $product) }}" class="btn btn-success">Show</a>
                     <a href="{{ route('products.edit', $product) }}" class="btn btn-primary">Edit</a>
-                    <a href="{{ route('products.destroy', $product) }}" class="btn btn-danger">Delete</a>
+                    <form action="{{ route('products.destroy', $product) }}" method="post" class="d-inline-block">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
+                    </form>
                 </td>
             </tr>
             @endforeach
