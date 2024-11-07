@@ -9,8 +9,12 @@
 
 </head>
 <body>
+    @include('includes.navbar')
 
     @yield('content')
+
+    @include('includes.footer')
+
     @yield('scripts')
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
 </body>
