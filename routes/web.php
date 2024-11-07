@@ -8,3 +8,5 @@ Route::get('/', function () {
 });
 
 Route::resource('products', ProductController::class);
+Route::post('products/search', [ProductController::class, 'search'])->name('products.search');
+Route::get('products/sort', [ProductController::class, 'sort'])->name('products.sort');
